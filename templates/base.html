@@ -1,0 +1,61 @@
+{% from "_macros.html" import marca %}
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>{% block titulo %}{{ nome_empresa }} | Faturamento e auditoria de guias médicas em Goiânia{% endblock %}</title>
+  <meta name="description" content="{% block descricao %}Auditoria de contas médicas, pré-faturamento, faturamento e repasse médico com métricas claras. Atendimento presencial em Goiânia. Peça uma cotação.{% endblock %}">
+  <meta name="theme-color" content="#F2F6F7">
+  {% block robots %}{% endblock %}
+  <link rel="preload" href="{{ url_for('static', filename='fonts/bricolage-grotesque-latin-wght-normal.woff2') }}" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="{{ url_for('static', filename='fonts/instrument-sans-latin-wght-normal.woff2') }}" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+  <script defer src="{{ url_for('static', filename='js/main.js') }}"></script>
+</head>
+<body>
+  <a class="skip" href="#conteudo">Ir para o conteúdo</a>
+
+  <header class="site-header" id="topo">
+    <div class="wrap site-header__in">
+      <a class="brand" href="{{ url_for('index') }}" aria-label="{{ nome_empresa }}, início">
+        {{ marca(36) }}
+        <span class="brand__name{% if not empresa.nome %} is-placeholder{% endif %}">{{ nome_empresa }}</span>
+      </a>
+
+      <button class="nav-toggle" type="button" id="nav-toggle" aria-expanded="false" aria-controls="nav">
+        <span class="sr-only">Abrir menu</span>
+        <span class="nav-toggle__bars" aria-hidden="true"></span>
+      </button>
+
+      <nav class="nav" id="nav" aria-label="Principal">
+        <a href="{{ url_for('index') }}#areas">Onde atuamos</a>
+        <a href="{{ url_for('index') }}#como-funciona">Como funciona</a>
+        <a href="{{ url_for('index') }}#metricas">Métricas</a>
+        <a href="{{ url_for('index') }}#duvidas">Dúvidas</a>
+        <a class="btn btn--primary btn--small nav__cta" href="{{ url_for('index') }}#cotacao">Solicitar cotação</a>
+      </nav>
+    </div>
+  </header>
+
+  <main id="conteudo">
+    {% block main %}{% endblock %}
+  </main>
+
+  <footer class="footer">
+    <div class="wrap footer__in">
+      <div class="footer__brand">
+        {{ marca(32) }}
+        <div>
+          <strong class="{% if not empresa.nome %}is-placeholder{% endif %}">{{ nome_empresa }}</strong>
+          <span>CNPJ {% if empresa.cnpj %}{{ empresa.cnpj }}{% else %}<span class="blank"></span>{% endif %}</span>
+        </div>
+      </div>
+      <p>Faturamento e auditoria de guias médicas. {{ empresa.cidade }}.</p>
+      <p class="footer__copy">&copy; {{ ano }} {{ nome_empresa }}. Todos os direitos reservados. <a href="{{ url_for('privacidade') }}">Política de privacidade</a></p>
+    </div>
+  </footer>
+
+  {% block barra %}{% endblock %}
+</body>
+</html>

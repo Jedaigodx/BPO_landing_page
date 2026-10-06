@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+{% block titulo %}Política de privacidade | {{ nome_empresa }}{% endblock %}
+{% block main %}
+<section class="section">
+  <div class="wrap page-narrow prose">
+    <h1 class="page-title">Política de privacidade</h1>
+    <p class="draft-note">Modelo de rascunho para demonstração (versão {{ versao }}). Deve ser revisado por profissional jurídico antes da publicação.</p>
+
+    <h2>Quem é o responsável pelos dados</h2>
+    <p>{{ nome_empresa }}, CNPJ {% if empresa.cnpj %}{{ empresa.cnpj }}{% else %}<span class="blank"></span>{% endif %}, com atendimento em {{ empresa.cidade }}. Contato para assuntos de privacidade: {% if empresa.email %}{{ empresa.email }}{% else %}<span class="blank"></span>{% endif %}.</p>
+
+    <h2>Quais dados coletamos</h2>
+    <p>No formulário de cotação: nome, WhatsApp, e-mail e, se você quiser informar, nome do serviço de saúde, volume de guias, convênios, áreas de interesse e mensagem. Também guardamos a data do seu consentimento e um código técnico derivado do endereço de IP, que serve apenas para limitar envios abusivos. O endereço de IP em si não é armazenado.</p>
+    <p>Pedimos que você não informe dados de pacientes no formulário.</p>
+
+    <h2>Para que usamos</h2>
+    <p>Para responder ao seu pedido de cotação, entender a sua operação e enviar a proposta. Não vendemos nem compartilhamos seus dados para publicidade.</p>
+
+    <h2>Com quem compartilhamos</h2>
+    <p>Com os provedores de infraestrutura que hospedam o site e o banco de dados, que tratam os dados apenas para nos prestar esse serviço.</p>
+
+    <h2>Por quanto tempo guardamos</h2>
+    <p>Pelo tempo necessário para a negociação e, depois, pelo prazo definido pela empresa: <span class="blank"></span>. Você pode pedir a exclusão antes disso.</p>
+
+    <h2>Seus direitos</h2>
+    <p>Você pode pedir confirmação de que tratamos seus dados, acesso, correção, eliminação e informações sobre o compartilhamento, além de retirar o consentimento a qualquer momento, conforme a Lei Geral de Proteção de Dados (Lei 13.709/2018). Escreva para o contato acima.</p>
+
+    <p><a class="btn btn--ghost" href="{{ url_for('index') }}">Voltar para o início</a></p>
+  </div>
+</section>
+{% endblock %}

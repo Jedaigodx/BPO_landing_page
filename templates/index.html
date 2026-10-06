@@ -1,0 +1,335 @@
+{% extends "base.html" %}
+{% from "_macros.html" import icone %}
+
+{% block main %}
+
+<!-- HERO -->
+<section class="hero">
+  <div class="wrap hero__grid">
+    <div class="hero__text">
+      <h1>Faturamento que chega inteiro ao caixa.</h1>
+      <p class="lead">Conferimos, faturamos e acompanhamos cada guia, e mostramos em números onde a receita está sendo perdida. Atendimento presencial em Goiânia.</p>
+      <div class="hero__actions">
+        <a class="btn btn--primary btn--lg" href="#cotacao">Solicitar cotação</a>
+        <a class="btn btn--ghost btn--lg" href="#como-funciona">Como funciona</a>
+      </div>
+      <p class="hero__note">Sem compromisso. Montamos o escopo junto com você.</p>
+    </div>
+
+    <div class="desk" id="desk" aria-labelledby="desk-titulo">
+      <div class="desk__head">
+        <div>
+          <h2 class="desk__title" id="desk-titulo">Lote de guias</h2>
+          <p class="desk__sub">Exemplo com dados fictícios</p>
+        </div>
+        <button class="btn btn--small btn--primary" id="desk-run" type="button">Simular conferência</button>
+      </div>
+
+      <div class="desk__progress" aria-hidden="true"><span id="desk-bar"></span></div>
+
+      <ul class="desk__list">
+        {% for g in lote %}
+        <li class="guia" data-state="pending" data-resultado="{{ g.resultado }}" data-valor="{{ g.valor }}" data-motivo="{{ g.motivo|default('') }}">
+          <div class="guia__main">
+            <span class="guia__proc">{{ g.procedimento }}</span>
+            <span class="guia__meta">Guia {{ g.guia }} &ndash; {{ g.convenio }}</span>
+          </div>
+          <div class="guia__side">
+            <span class="guia__valor">{{ g.valor|brl }}</span>
+            <span class="guia__status" data-status>Aguardando conferência</span>
+          </div>
+          <p class="guia__motivo" data-motivo-texto></p>
+        </li>
+        {% endfor %}
+      </ul>
+
+      <div class="desk__totals" aria-live="polite">
+        <div class="total total--ok">
+          <span class="total__label">Liberado para envio</span>
+          <strong class="total__valor" id="total-ok">R$ 0,00</strong>
+        </div>
+        <div class="total total--risk">
+          <span class="total__label">Retido para correção</span>
+          <strong class="total__valor" id="total-risk">R$ 0,00</strong>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- DIFERENCIAIS (faixa curta) -->
+<section class="strip" aria-label="Diferenciais">
+  <ul class="wrap strip__list">
+    {% for d in diferenciais %}
+    <li class="strip__item">
+      <span class="strip__icon">{{ icone(d.icone) }}</span>
+      <div>
+        <h2 class="strip__title">{{ d.titulo }}</h2>
+        <p>{{ d.texto }}</p>
+      </div>
+    </li>
+    {% endfor %}
+  </ul>
+</section>
+
+<!-- ÁREAS (discreto: a escolha do escopo acontece na cotação) -->
+<section class="section" id="areas">
+  <div class="wrap areas">
+    <div class="areas__intro">
+      <h2>O BPO cobre vários momentos do ciclo da guia</h2>
+      <p>Cada operação precisa de algo diferente. Na cotação, definimos com você quais etapas fazem sentido agora e quais podem entrar depois.</p>
+      <a class="btn btn--primary" href="#cotacao">Solicitar cotação</a>
+    </div>
+    <ul class="areas__list">
+      {% for a in areas %}
+      <li class="area">
+        <span class="area__icon">{{ icone(a.icone) }}</span>
+        <div>
+          <h3>{{ a.titulo }}</h3>
+          <p>{{ a.texto }}</p>
+        </div>
+      </li>
+      {% endfor %}
+    </ul>
+  </div>
+</section>
+
+<!-- COMO FUNCIONA -->
+<section class="section section--sage" id="como-funciona">
+  <div class="wrap">
+    <div class="section__head">
+      <h2>Como funciona</h2>
+      <p>Do pedido de cotação à leitura dos números, em quatro etapas. A rotina se adapta ao volume de guias e ao número de convênios de cada operação.</p>
+    </div>
+    <ol class="steps">
+      {% for p in passos %}
+      <li class="step">
+        <span class="step__n">{{ loop.index }}</span>
+        <h3>{{ p.titulo }}</h3>
+        <p>{{ p.texto }}</p>
+      </li>
+      {% endfor %}
+    </ol>
+  </div>
+</section>
+
+<!-- MÉTRICAS -->
+<section class="section section--dark" id="metricas">
+  <div class="wrap">
+    <div class="section__head">
+      <h2>Números para decidir, não só relatórios</h2>
+      <p>Todo mês você vê o que foi enviado, o que foi glosado, o que já entrou no caixa e quanto cada grupo de profissionais repassa.</p>
+    </div>
+
+    <ul class="kpis">
+      {% for k in kpis %}
+      <li class="kpi">
+        <span class="kpi__label">{{ k.rotulo }}</span>
+        <strong class="kpi__valor">{{ k.valor }}</strong>
+      </li>
+      {% endfor %}
+    </ul>
+
+    <div class="dash">
+      <article class="panel panel--wide">
+        <header class="panel__head">
+          <h3>Faturado e recebido nos últimos 12 meses</h3>
+          <ul class="legend">
+            <li><span class="legend__sw legend__sw--faturado"></span>Faturado</li>
+            <li><span class="legend__sw legend__sw--recebido"></span>Recebido</li>
+          </ul>
+        </header>
+        <svg class="chart" viewBox="0 0 {{ grafico.largura }} {{ grafico.altura }}" role="img"
+             aria-label="Gráfico de linhas com faturado e recebido mensal, em milhares de reais. O faturado cresce de 212 para 301 mil e o recebido de 188 para 290 mil. Dados fictícios.">
+          {% for g in grafico.grade %}
+          <line class="chart__grid" x1="{{ grafico.margem_esq }}" x2="{{ grafico.largura - grafico.margem_dir }}" y1="{{ g.y }}" y2="{{ g.y }}"/>
+          <text class="chart__tick" x="{{ grafico.margem_esq - 8 }}" y="{{ g.y + 4 }}" text-anchor="end">{{ g.rotulo }}</text>
+          {% endfor %}
+          {% for r in grafico.rotulos_x %}
+          <text class="chart__tick" x="{{ r.x }}" y="{{ grafico.base + 20 }}" text-anchor="middle">{{ r.texto }}</text>
+          {% endfor %}
+          {% for l in grafico.linhas %}
+          <polyline class="chart__line chart__line--{{ l.classe }}" points="{{ l.pontos }}"/>
+          <circle class="chart__dot chart__dot--{{ l.classe }}" cx="{{ l.fim[0] }}" cy="{{ l.fim[1] }}" r="4.5"/>
+          {% endfor %}
+        </svg>
+        <p class="panel__note">Valores em milhares de reais.</p>
+      </article>
+
+      <article class="panel">
+        <header class="panel__head">
+          <h3>Glosa por convênio</h3>
+        </header>
+        <ul class="bars">
+          {% for c in glosa %}
+          <li class="bar">
+            <span class="bar__nome">{{ c.nome }}</span>
+            <svg class="bar__track" viewBox="0 0 100 8" preserveAspectRatio="none" role="img" aria-label="{{ c.pct|decimal }}% de glosa">
+              <rect class="bar__bg" width="100" height="8"/>
+              <rect class="bar__fill" width="{{ (c.pct / glosa_max * 100)|round(1) }}" height="8"/>
+            </svg>
+            <span class="bar__valor">{{ c.pct|decimal }}%</span>
+          </li>
+          {% endfor %}
+        </ul>
+        <p class="panel__note">Mostra onde vale corrigir o processo primeiro.</p>
+      </article>
+
+      <article class="panel panel--wide">
+        <header class="panel__head">
+          <h3>Repasse previsto por especialidade</h3>
+        </header>
+        <div class="table-wrap">
+          <table class="table">
+            <thead>
+              <tr>
+                <th scope="col">Especialidade</th>
+                <th scope="col" class="num">Guias</th>
+                <th scope="col" class="num">Faturado</th>
+                <th scope="col" class="num">Repasse previsto</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for r in repasse %}
+              <tr>
+                <th scope="row">{{ r.grupo }}</th>
+                <td class="num">{{ r.guias|milhar }}</td>
+                <td class="num">{{ r.faturado|brl }}</td>
+                <td class="num">{{ r.repasse|brl }}</td>
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+      </article>
+    </div>
+
+    <p class="dash__note">Exemplo com dados fictícios. Os indicadores reais são definidos junto com você.</p>
+  </div>
+</section>
+
+<!-- FAQ -->
+<section class="section" id="duvidas">
+  <div class="wrap faq">
+    <div class="faq__intro">
+      <h2>Dúvidas frequentes</h2>
+      <p>Não encontrou o que procura? Conte na cotação.</p>
+    </div>
+    <div class="faq__list">
+      {% for f in faq %}
+      <details class="qa">
+        <summary>{{ f.p }}</summary>
+        <p>{{ f.r }}</p>
+      </details>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+<!-- COTAÇÃO -->
+<section class="section section--sage" id="cotacao">
+  <div class="wrap cotacao">
+    <div class="cotacao__intro">
+      <h2>Solicite uma cotação</h2>
+      <p>Conte um pouco sobre a sua operação. Retornamos para entender o que você precisa e montar a proposta junto com você.</p>
+      <dl class="cotacao__dados">
+        <div>
+          <dt>Telefone</dt>
+          <dd>{% if empresa.telefone %}{{ empresa.telefone }}{% else %}<span class="blank"></span>{% endif %}</dd>
+        </div>
+        <div>
+          <dt>E-mail</dt>
+          <dd>{% if empresa.email %}{{ empresa.email }}{% else %}<span class="blank"></span>{% endif %}</dd>
+        </div>
+        <div>
+          <dt>Endereço</dt>
+          <dd>{% if empresa.endereco %}{{ empresa.endereco }}{% else %}<span class="blank"></span>{% endif %}</dd>
+        </div>
+        <div>
+          <dt>Atendimento</dt>
+          <dd>{{ empresa.cidade }}, presencial</dd>
+        </div>
+      </dl>
+    </div>
+
+    <form class="form" id="form-cotacao" novalidate>
+      <div class="field">
+        <label for="nome">Nome</label>
+        <input id="nome" name="nome" type="text" autocomplete="name" maxlength="120" required>
+        <p class="field__error" data-error-for="nome"></p>
+      </div>
+
+      <div class="field-row">
+        <div class="field">
+          <label for="whatsapp">WhatsApp</label>
+          <input id="whatsapp" name="whatsapp" type="tel" inputmode="tel" autocomplete="tel-national" placeholder="(62) 91234-5678" maxlength="20" required>
+          <p class="field__error" data-error-for="whatsapp"></p>
+        </div>
+        <div class="field">
+          <label for="email">E-mail</label>
+          <input id="email" name="email" type="email" autocomplete="email" maxlength="160" required>
+          <p class="field__error" data-error-for="email"></p>
+        </div>
+      </div>
+
+      <div class="field">
+        <label for="instituicao">Nome do serviço de saúde <span class="opt-tag">(opcional)</span></label>
+        <input id="instituicao" name="instituicao" type="text" autocomplete="organization" maxlength="160">
+      </div>
+
+      <div class="field-row">
+        <div class="field">
+          <label for="volume_guias">Volume de guias <span class="opt-tag">(opcional)</span></label>
+          <select id="volume_guias" name="volume_guias">
+            <option value="">Selecione</option>
+            {% for v in volumes %}<option value="{{ v }}">{{ v }}</option>{% endfor %}
+          </select>
+        </div>
+        <div class="field">
+          <label for="convenios">Convênios com que trabalha <span class="opt-tag">(opcional)</span></label>
+          <input id="convenios" name="convenios" type="text" maxlength="200">
+        </div>
+      </div>
+
+      <fieldset class="field checks">
+        <legend>Em que podemos ajudar? <span class="opt-tag">(opcional)</span></legend>
+        <div class="checks__grid">
+          {% for a in areas %}
+          <label class="check"><input type="checkbox" name="interesse" value="{{ a.id }}"><span>{{ a.titulo }}</span></label>
+          {% endfor %}
+          <label class="check"><input type="checkbox" name="interesse" value="indefinido"><span>Ainda não sei</span></label>
+        </div>
+      </fieldset>
+
+      <div class="field">
+        <label for="mensagem">Mensagem <span class="opt-tag">(opcional)</span></label>
+        <textarea id="mensagem" name="mensagem" rows="4" maxlength="1000"></textarea>
+        <p class="field__hint">Não inclua nomes ou dados de pacientes.</p>
+      </div>
+
+      <!-- campo isca contra robôs: não preencher -->
+      <div class="hp" aria-hidden="true">
+        <label for="site">Não preencha este campo</label>
+        <input id="site" name="site" type="text" tabindex="-1" autocomplete="off">
+      </div>
+
+      <div class="field">
+        <label class="check check--consent">
+          <input type="checkbox" name="consentimento" id="consentimento">
+          <span>Li e concordo com a <a href="{{ url_for('privacidade') }}" target="_blank" rel="noopener">política de privacidade</a>.</span>
+        </label>
+        <p class="field__error" data-error-for="consentimento"></p>
+      </div>
+
+      <button class="btn btn--primary btn--block btn--lg" type="submit" id="form-enviar">Solicitar cotação</button>
+      <p class="form__status" id="form-status" role="status" aria-live="polite"></p>
+    </form>
+  </div>
+</section>
+{% endblock %}
+
+{% block barra %}
+<div class="cta-bar" id="cta-bar">
+  <a class="btn btn--primary btn--block" href="#cotacao">Solicitar cotação</a>
+</div>
+{% endblock %}
