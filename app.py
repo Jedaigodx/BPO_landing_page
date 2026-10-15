@@ -10,7 +10,7 @@ import os
 import re
 from datetime import datetime, timedelta, timezone
 from pathlib import Path
-from urllib.parse import urlparse
+from urllib.parse import quote, urlparse
 
 from flask import Flask, jsonify, render_template, request
 from flask_sqlalchemy import SQLAlchemy
@@ -20,7 +20,7 @@ from werkzeug.middleware.proxy_fix import ProxyFix
 BASE_DIR = Path(__file__).resolve().parent
 
 EM_PRODUCAO = bool(os.environ.get("RAILWAY_PROJECT_ID")) or os.environ.get("APP_ENV") == "production"
-VERSAO_POLITICA = "2026-09"
+VERSAO_POLITICA = "2026-10"
 
 # ---------------------------------------------------------------------------
 # Aplicação e configuração
@@ -77,6 +77,20 @@ EMPRESA = {
     "endereco": "",
 }
 
+# Número completo: código do país + DDD + número, apenas dígitos. Nunca inclua texto no número.
+WHATSAPP_NUMBER = re.sub(r"\D", "", os.environ.get("WHATSAPP_NUMBER", ""))
+if WHATSAPP_NUMBER and not (WHATSAPP_NUMBER.startswith("55") and len(WHATSAPP_NUMBER) in (12, 13)):
+    WHATSAPP_NUMBER = ""
+WHATSAPP_MESSAGE = (
+    "Olá! Gostaria de receber mais informações sobre os serviços de auditoria, "
+    "faturamento e gestão do ciclo de receita para a minha clínica. "
+    "Como podemos conversar sobre um projeto?"
+)
+WHATSAPP_LINK = (
+    f"https://wa.me/{WHATSAPP_NUMBER}?text={quote(WHATSAPP_MESSAGE, safe='')}"
+    if WHATSAPP_NUMBER else ""
+)
+
 # ---------------------------------------------------------------------------
 # Conteúdo
 # ---------------------------------------------------------------------------
@@ -107,6 +121,12 @@ FAQ = [
      "r": "Não necessariamente. O escopo é definido conforme os pontos identificados e as prioridades do prestador."},
     {"p": "Quais convênios são avaliados?",
      "r": "Mapeamos os convênios e as regras aplicáveis à sua operação durante a conversa inicial. A viabilidade depende do escopo e dos materiais disponíveis."},
+    {"p": "Vocês exigem que a clínica troque de sistema?",
+     "r": "Não. Primeiro avaliamos os recursos do sistema existente e as necessidades do fluxo. Uma nova ferramenta só é sugerida quando houver uma lacuna identificada; a decisão de adoção é da clínica."},
+    {"p": "O trabalho também considera atendimentos particulares?",
+     "r": "Sim. O escopo pode incluir a organização de rotinas administrativas de cadastro, registros, cobrança e acompanhamento de recebíveis particulares, além dos fluxos de convênios."},
+    {"p": "Como a LGPD entra no projeto?",
+     "r": "O desenho do fluxo deve definir finalidade, acesso necessário, compartilhamento, responsabilidades e retenção. O tratamento de dados de pacientes exige avaliação e acordos específicos antes da operação; não oferecemos certificação ou assessoria jurídica."},
     {"p": "Que informações devo enviar?",
      "r": "No formulário, compartilhe apenas informações gerais sobre a operação. Não envie nomes, prontuários ou outros dados pessoais de pacientes."},
     {"p": "Como os dados são tratados?",
@@ -138,7 +158,7 @@ def filtro_milhar(valor):
 @app.context_processor
 def contexto_global():
     return {"empresa": EMPRESA, "nome_empresa": EMPRESA["nome"] or "Gestão de Receita em Saúde",
-            "ano": datetime.now().year}
+            "ano": datetime.now().year, "whatsapp_link": WHATSAPP_LINK}
 
 
 # ---------------------------------------------------------------------------

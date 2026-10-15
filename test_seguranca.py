@@ -1,6 +1,8 @@
 """Testes automatizados de segurança e do fluxo de cotação. Rodar: python test_seguranca.py"""
 import os, tempfile, json
-os.environ.pop("DATABASE_URL", None)
+# Isola os testes em SQLite na memória. Nunca use o banco local de desenvolvimento
+# ou o PostgreSQL configurado no ambiente para rodar esta suíte destrutiva.
+os.environ["DATABASE_URL"] = "sqlite://"
 import app as a
 
 cliente = a.app.test_client()

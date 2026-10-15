@@ -1,0 +1,22 @@
+# Segredos e configurações locais
+.env
+.env.*
+!.env.example
+
+# Python e ambientes virtuais
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+
+# Dados locais e arquivos do sistema
+instance/*.db
+instance/*.sqlite
+instance/*.sqlite3
+.DS_Store
+Thumbs.db
+
+# Logs e cobertura
+*.log
+.coverage
+htmlcov/

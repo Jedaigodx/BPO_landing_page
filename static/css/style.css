@@ -565,9 +565,28 @@ body { background: var(--mist); }
 .service-card__number { color: #789084; font-size: .78rem; letter-spacing: .12em; font-weight: 700; }
 .service-card h3 { margin-top: 1.5rem; max-width: 19ch; font-size: 1.35rem; line-height: 1.2; }
 .service-card p { margin-top: .8rem; color: var(--muted); font-size: .96rem; }
+.service-card__list { display: grid; gap: .48rem; margin-top: 1rem; padding-left: 1.1rem; list-style: disc; color: #435A51; font-size: .9rem; }
+.service-card__list li::marker { color: #789084; }
 .service-card a, .text-link { display: inline-flex; align-items: center; gap: .45rem; margin-top: auto; padding-top: 1.4rem; color: var(--petrol); font-size: .92rem; font-weight: 700; text-decoration: none; }
 .service-card a:hover, .text-link:hover { text-decoration: underline; text-underline-offset: 4px; }
 .service-card a span, .text-link span { font-size: 1.05rem; }
+
+.pain-section { background: #EFF3EF; }
+.pain-grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 1.4rem; margin-top: 2.75rem; }
+.pain-grid li { padding-top: 1rem; border-top: 1px solid #C9D6CE; }
+.pain-grid li > span { color: #789084; font-size: .76rem; letter-spacing: .12em; font-weight: 700; }
+.pain-grid h3 { margin-top: 1rem; font-size: 1.14rem; line-height: 1.25; }
+.pain-grid p { margin-top: .65rem; color: var(--muted); font-size: .92rem; }
+
+.operations-section { background: #F7F8F5; }
+.operations-section .section__head { max-width: 54rem; }
+.operations-section .section__head h2 { margin-top: .85rem; max-width: 20ch; }
+.operations-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1rem; }
+.operations-card { padding: clamp(1.35rem, 2.2vw, 1.9rem); border: 1px solid #DDE5DF; border-radius: 8px; background: white; }
+.operations-card h3 { margin-top: .75rem; max-width: 25ch; font-size: 1.3rem; }
+.operations-card > p:not(.eyebrow) { margin-top: .8rem; color: var(--muted); font-size: .96rem; }
+.operations-card .text-link { margin-top: 1.2rem; padding-top: 0; }
+.operations-card--wide { grid-column: 1 / -1; }
 
 .diagnostic { padding-block: clamp(4rem, 7vw, 6rem); }
 .section--sage { background: #E8EFEB; }
@@ -611,6 +630,7 @@ body { background: var(--mist); }
 .contact-note p { font-size: .93rem; color: var(--muted); }
 .contact-note strong { color: var(--ink); }
 .privacy-note { margin-top: 1.3rem !important; font-size: .86rem; }
+.contact-whatsapp { margin-top: .65rem; }
 .form { gap: 1rem; border-color: #D6E0D9; border-radius: 8px; box-shadow: 0 16px 45px rgba(24, 52, 47, .08); padding: clamp(1.25rem, 3vw, 2rem); }
 .form__heading { margin-bottom: .2rem; }
 .form__heading h3 { font-size: 1.35rem; }
@@ -631,6 +651,9 @@ body { background: var(--mist); }
   .hero-card { max-width: 42rem; }
   .section__head--split, .diagnostic__grid, .about-card { grid-template-columns: 1fr; gap: 1.5rem; }
   .service-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .pain-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .operations-grid { grid-template-columns: 1fr; }
+  .operations-card--wide { grid-column: auto; }
   .steps { grid-template-columns: 1fr; }
   .step { padding-right: 0; }
   .cotacao { grid-template-columns: 1fr; }
@@ -641,6 +664,7 @@ body { background: var(--mist); }
   .hero__text h1 { font-size: clamp(2.65rem, 12vw, 3.5rem); }
   .hero__actions .btn { flex: 1 1 100%; }
   .service-grid { grid-template-columns: 1fr; margin-top: 2rem; }
+  .pain-grid { grid-template-columns: 1fr; gap: 1.5rem; }
   .service-card { min-height: 0; }
   .service-card a { padding-top: 1rem; }
   .value-band__inner { padding-block: 1.1rem; }

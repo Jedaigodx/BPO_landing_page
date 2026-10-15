@@ -6,7 +6,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <title>{% block titulo %}{{ nome_empresa }} | Gestão do ciclo de receita em saúde{% endblock %}</title>
   <meta name="description" content="{% block descricao %}Auditoria, faturamento e gestão do ciclo de receita em saúde para clínicas e prestadores. Conheça um projeto de diagnóstico inicial em Goiânia.{% endblock %}">
-  <meta name="theme-color" content="#F2F6F7">
+  <meta name="theme-color" content="#F7F8F5">
   {% block robots %}{% endblock %}
   <link rel="preload" href="{{ url_for('static', filename='fonts/bricolage-grotesque-latin-wght-normal.woff2') }}" as="font" type="font/woff2" crossorigin>
   <link rel="preload" href="{{ url_for('static', filename='fonts/instrument-sans-latin-wght-normal.woff2') }}" as="font" type="font/woff2" crossorigin>
@@ -32,7 +32,7 @@
         <a href="{{ url_for('index') }}#atuacao">Atuação</a>
         <a href="{{ url_for('index') }}#metodo">Como trabalhamos</a>
         <a href="{{ url_for('index') }}#duvidas">Dúvidas</a>
-        <a class="btn btn--primary btn--small nav__cta" href="{{ url_for('index') }}#conversa">Conversar sobre um projeto</a>
+        {% if whatsapp_link %}<a class="btn btn--primary btn--small nav__cta" href="{{ whatsapp_link }}" target="_blank" rel="noopener noreferrer">WhatsApp</a>{% else %}<a class="btn btn--primary btn--small nav__cta" href="{{ url_for('index') }}#conversa">Conversar sobre um projeto</a>{% endif %}
       </nav>
     </div>
   </header>
