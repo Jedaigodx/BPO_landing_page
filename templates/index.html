@@ -9,7 +9,7 @@
       <h1>Mais clareza entre o atendimento realizado e o valor recebido.</h1>
       <p class="lead">Faturamento ou auditoria sob medida — ou apoio completo, da conta médica ao recebimento e repasse. Com processos claros e indicadores de BI para orientar decisões.</p>
       <div class="hero__actions">
-        {% if whatsapp_link %}<a class="btn btn--primary btn--lg" href="{{ whatsapp_link }}" target="_blank" rel="noopener noreferrer">Conversar pelo WhatsApp</a>{% else %}<a class="btn btn--primary btn--lg" href="#conversa">Conversar sobre um projeto</a>{% endif %}
+        {% if whatsapp_link %}<a class="btn btn--primary btn--lg" href="{{ whatsapp_link }}" target="_blank" rel="noopener noreferrer">💬 Conversar pelo WhatsApp</a>{% else %}<a class="btn btn--primary btn--lg" href="#conversa">Conversar sobre um projeto</a>{% endif %}
         <a class="btn btn--ghost btn--lg" href="#atuacao">Conhecer a atuação</a>
       </div>
       <p class="hero__note">O escopo começa pela realidade da sua operação.</p>
@@ -40,12 +40,15 @@
       <div><p class="eyebrow">A ROTINA DE UMA CLÍNICA PEQUENA</p><h2>Gargalos administrativos consomem tempo e deixam a receita menos previsível.</h2></div>
       <p>Quando poucas pessoas cuidam da recepção, do atendimento e do faturamento, pendências pequenas podem se acumular. O primeiro passo é enxergar o processo completo, sem atribuir culpa à equipe.</p>
     </div>
-    <ul class="pain-grid">
+    <div class="carousel" data-carousel aria-label="Desafios comuns na rotina da clínica">
+    <ul class="pain-grid carousel__track">
       <li><details class="expand-card"><summary><span>01</span><strong>Regras e prazos por convênio</strong></summary><p>Tabelas, portais, documentos, padrões de envio e datas de corte variam. A rotina precisa acompanhar as regras vigentes e o que foi contratado.</p></details></li>
       <li><details class="expand-card"><summary><span>02</span><strong>Retrabalho entre atendimento e faturamento</strong></summary><p>Informações incompletas, autorizações pendentes ou registros inconsistentes voltam para a equipe e atrasam o fechamento das contas.</p></details></li>
       <li><details class="expand-card"><summary><span>03</span><strong>Glosas e recebimentos sem conciliação</strong></summary><p>Sem acompanhar produção, faturamento, pagamentos e contestações, fica difícil entender diferenças e agir nos prazos.</p></details></li>
       <li><details class="expand-card"><summary><span>04</span><strong>Rotinas particulares sem padrão</strong></summary><p>Cadastro, registros administrativos, cobrança e acompanhamento podem variar conforme a pessoa que executa a rotina.</p></details></li>
     </ul>
+    <div class="carousel__controls"><button type="button" data-carousel-prev aria-label="Desafio anterior">←</button><span>Deslize para explorar</span><button type="button" data-carousel-next aria-label="Próximo desafio">→</button></div>
+    </div>
   </div>
 </section>
 
@@ -55,12 +58,12 @@
       <div><p class="eyebrow">COMO PODEMOS APOIAR</p><h2>O trabalho começa onde a operação mais precisa.</h2></div>
       <p>Reunimos conhecimento técnico e leitura operacional para compreender o caminho da receita e transformar achados em prioridades de ação.</p>
     </div>
-    <ul class="service-grid">
+    <div class="carousel" data-carousel aria-label="Opções de serviços Balestra">
+    <ul class="service-grid carousel__track">
       {% for a in areas %}
       <li class="service-card">
         <details class="service-details">
-        <span class="service-card__number">0{{ loop.index }}</span>
-        <summary><strong>{{ a.titulo }}</strong><span class="service-summary">{{ a.resumo }}</span></summary>
+        <summary><span class="service-card__icon">{{ icone(a.icone) }}</span><span class="service-card__number">0{{ loop.index }}</span><strong>{{ a.titulo }}</strong><span class="service-summary">{{ a.resumo }}</span></summary>
         <p>{{ a.texto }}</p>
         {% if a.id == 'auditoria' %}
         <ul class="service-card__list"><li>Mapeamento do caminho da produção até o pagamento</li><li>Identificação de divergências, pendências e causas de glosa</li><li>Priorização de ajustes com base em evidências</li></ul>
@@ -74,6 +77,8 @@
       </li>
       {% endfor %}
     </ul>
+    <div class="carousel__controls"><button type="button" data-carousel-prev aria-label="Serviço anterior">←</button><span>Deslize para explorar</span><button type="button" data-carousel-next aria-label="Próximo serviço">→</button></div>
+    </div>
   </div>
 </section>
 
@@ -91,7 +96,8 @@
       <h2>Organizamos o processo antes de propor uma ferramenta nova.</h2>
       <p>As recomendações partem do fluxo real da clínica e consideram os requisitos aplicáveis a cada tipo de atendimento.</p>
     </div>
-    <div class="operations-grid">
+    <div class="carousel" data-carousel aria-label="Sistemas, padronização e privacidade">
+    <div class="operations-grid carousel__track">
       <details class="operations-card expand-card">
         <summary><span class="eyebrow">SISTEMAS</span><strong>Trabalhamos com o que a clínica já usa.</strong></summary>
         <p>Mapeamos os recursos do sistema atual, os acessos e os pontos em que a equipe ainda depende de controles paralelos. Se identificarmos uma lacuna, podemos sugerir alternativas considerando adequação ao processo, integração, custo e gestão de acesso e dados. A decisão de adotar ou trocar permanece com a clínica.</p>
@@ -105,6 +111,8 @@
         <summary><span class="eyebrow">PRIVACIDADE E LGPD</span><strong>Dados de saúde exigem cuidado em cada etapa.</strong></summary>
         <p>Ajudamos a estruturar fluxos com finalidade definida, acesso mínimo necessário, compartilhamento controlado, responsabilidades documentadas e critérios de retenção e descarte alinhados ao projeto. Antes de qualquer operação com dados, o escopo, as instruções e os papéis das partes precisam estar definidos. Não prometemos certificação nem substituímos assessoria jurídica ou o encarregado de dados da clínica.</p>
       </details>
+    </div>
+    <div class="carousel__controls"><button type="button" data-carousel-prev aria-label="Informação anterior">←</button><span>Deslize para explorar</span><button type="button" data-carousel-next aria-label="Próxima informação">→</button></div>
     </div>
   </div>
 </section>
@@ -165,8 +173,8 @@
       <h2>Vamos entender o momento da sua operação?</h2>
       <p>Conte brevemente sobre a clínica e os desafios que gostaria de avaliar. A conversa inicial ajuda a definir se há aderência e qual escopo de projeto faz sentido.</p>
       <div class="contact-note"><span class="contact-note__mark">{{ icone('local') }}</span><p><strong>Atendimento em {{ empresa.cidade }}</strong><br>Projetos desenhados conforme a realidade do prestador.</p></div>
-      <p class="privacy-note">Não envie nomes, documentos ou informações de pacientes neste formulário.</p>
-      {% if whatsapp_link %}<a class="btn btn--ghost btn--lg contact-whatsapp" href="{{ whatsapp_link }}" target="_blank" rel="noopener noreferrer">Prefiro chamar no WhatsApp</a>{% endif %}
+      <p class="privacy-note">Não envie nomes, documentos ou informações de pacientes. Ao continuar, seus dados de contato e o resumo do projeto irão para uma mensagem do WhatsApp que você poderá revisar e enviar.</p>
+      {% if whatsapp_link %}<a class="btn btn--ghost btn--lg contact-whatsapp" href="{{ whatsapp_link }}" target="_blank" rel="noopener noreferrer">💬 Prefiro chamar no WhatsApp</a>{% endif %}
     </div>
 
     <form class="form" id="form-cotacao" novalidate>
@@ -178,18 +186,18 @@
       </div>
       <div class="field"><label for="instituicao">Clínica ou serviço de saúde</label><input id="instituicao" name="instituicao" type="text" autocomplete="organization" maxlength="160"></div>
       <div class="field-row">
-        <div class="field"><label for="volume_guias">Volume mensal aproximado</label><select id="volume_guias" name="volume_guias"><option value="">Selecione, se souber</option>{% for v in volumes %}<option value="{{ v }}">{{ v }}</option>{% endfor %}</select></div>
+        <div class="field"><label for="volume_guias">Volume mensal de guias aproximado</label><select id="volume_guias" name="volume_guias"><option value="">Selecione, se souber</option>{% for v in volumes %}<option value="{{ v }}">{{ v }}</option>{% endfor %}</select></div>
         <div class="field"><label for="convenios">Convênios atendidos</label><input id="convenios" name="convenios" type="text" maxlength="200"></div>
       </div>
       <fieldset class="field checks"><legend>O que gostaria de avaliar?</legend><div class="checks__grid">{% for a in areas %}<label class="check"><input type="checkbox" name="interesse" value="{{ a.id }}"><span>{{ a.titulo }}</span></label>{% endfor %}<label class="check"><input type="checkbox" name="interesse" value="indefinido"><span>Quero entender as possibilidades</span></label></div></fieldset>
       <div class="field"><label for="mensagem">Contexto do projeto</label><textarea id="mensagem" name="mensagem" rows="4" maxlength="1000" placeholder="Qual desafio ou processo você gostaria de analisar?"></textarea><p class="field__hint">Não inclua dados pessoais ou clínicos de pacientes.</p></div>
       <div class="hp" aria-hidden="true"><label for="site">Não preencha este campo</label><input id="site" name="site" type="text" tabindex="-1" autocomplete="off"></div>
-      <div class="field"><label class="check check--consent"><input type="checkbox" name="consentimento" id="consentimento"><span>Li e concordo com a <a href="{{ url_for('privacidade') }}" target="_blank" rel="noopener">política de privacidade</a>.</span></label><p class="field__error" data-error-for="consentimento"></p></div>
-      <button class="btn btn--primary btn--block btn--lg" type="submit" id="form-enviar">Solicitar conversa</button>
+      <div class="field"><label class="check check--consent"><input type="checkbox" name="consentimento" id="consentimento"><span>Li a <a href="{{ url_for('privacidade') }}" target="_blank" rel="noopener">política de privacidade</a> e estou ciente de que os dados serão incluídos na mensagem do WhatsApp para eu revisar e enviar.</span></label><p class="field__error" data-error-for="consentimento"></p></div>
+      <button class="btn btn--primary btn--block btn--lg" type="submit" id="form-enviar">💬 Continuar pelo WhatsApp</button>
       <p class="form__status" id="form-status" role="status" aria-live="polite"></p>
     </form>
   </div>
 </section>
 {% endblock %}
 
-{% block barra %}<div class="cta-bar" id="cta-bar">{% if whatsapp_link %}<a class="btn btn--primary btn--block" href="{{ whatsapp_link }}" target="_blank" rel="noopener noreferrer">Conversar pelo WhatsApp</a>{% else %}<a class="btn btn--primary btn--block" href="#conversa">Conversar sobre um projeto</a>{% endif %}</div>{% endblock %}
+{% block barra %}<div class="cta-bar" id="cta-bar">{% if whatsapp_link %}<a class="btn btn--primary btn--block" href="{{ whatsapp_link }}" target="_blank" rel="noopener noreferrer">💬 Conversar pelo WhatsApp</a>{% else %}<a class="btn btn--primary btn--block" href="#conversa">Conversar sobre um projeto</a>{% endif %}</div>{% endblock %}

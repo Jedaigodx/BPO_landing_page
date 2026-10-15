@@ -8,9 +8,7 @@ import hmac
 import logging
 import os
 import re
-import smtplib
 from datetime import datetime, timedelta, timezone
-from email.message import EmailMessage
 from pathlib import Path
 from urllib.parse import quote, urlparse
 
@@ -260,41 +258,29 @@ IDS_INTERESSE = {a["id"] for a in AREAS} | {"indefinido"}
 LIMITE_POR_HORA = 5
 
 
-def notificar_lead_por_email(lead):
-    """Envia aviso ao Gmail configurado; o lead já estará persistido no banco."""
-    remetente = os.environ.get("GMAIL_ADDRESS", "").strip()
-    senha_app = os.environ.get("GMAIL_APP_PASSWORD", "").replace(" ", "")
-    destinatario = os.environ.get("LEADS_EMAIL", "").strip()
-    if not all((remetente, senha_app, destinatario)):
-        return False
-    if not EMAIL_RE.match(remetente) or not EMAIL_RE.match(destinatario):
-        app.logger.warning("Configuração de e-mail de contato inválida.")
-        return False
-
-    mensagem = EmailMessage()
-    mensagem["Subject"] = "Novo contato — Balestra Contas Médicas"
-    mensagem["From"] = remetente
-    mensagem["To"] = destinatario
-    mensagem["Reply-To"] = lead["email"]
-    mensagem.set_content(
-        "Novo pedido de contato recebido pelo site Balestra Contas Médicas.\n\n"
+def link_whatsapp_do_lead(lead):
+    """Prepara a mensagem com os dados preenchidos; o visitante confirma o envio no WhatsApp."""
+    if not WHATSAPP_NUMBER:
+        return ""
+    nomes_interesse = {
+        "faturamento": "Faturamento médico",
+        "auditoria": "Auditoria de contas médicas",
+        "ciclo_completo": "Gestão completa do ciclo de receita",
+        "indefinido": "Quero entender as possibilidades",
+    }
+    interesses = ", ".join(
+        nomes_interesse.get(item, item) for item in lead["interesse"].split(", ") if item
+    ) or "Não informado"
+    texto = (
+        "Olá! Preenchi o formulário no site da Balestra Contas Médicas e gostaria de conversar.\n\n"
         f"Nome: {lead['nome']}\nE-mail: {lead['email']}\nWhatsApp: {lead['whatsapp']}\n"
         f"Clínica: {lead['instituicao'] or 'Não informado'}\n"
         f"Volume mensal: {lead['volume_guias'] or 'Não informado'}\n"
         f"Convênios: {lead['convenios'] or 'Não informado'}\n"
-        f"Interesse: {lead['interesse'] or 'Não informado'}\n\n"
-        f"Mensagem:\n{lead['mensagem'] or 'Não informada'}\n\n"
-        "Não encaminhe dados de pacientes por e-mail."
+        f"Interesse: {interesses}\n"
+        f"Contexto: {lead['mensagem'] or 'Não informado'}"
     )
-    try:
-        with smtplib.SMTP_SSL("smtp.gmail.com", 465, timeout=8) as smtp:
-            smtp.login(remetente, senha_app)
-            smtp.send_message(mensagem)
-        return True
-    except (OSError, smtplib.SMTPException):
-        # Não registrar exceção nem os dados do lead. O pedido permanece salvo no banco.
-        app.logger.warning("Não foi possível enviar a notificação de novo contato por e-mail.")
-        return False
+    return f"https://wa.me/{WHATSAPP_NUMBER}?text={quote(texto, safe='')}"
 
 
 def _texto(valor, limite, multilinha=False):
@@ -397,7 +383,7 @@ def contato():
         app.logger.error("Falha ao gravar cotação.", exc_info=False)
         return _erro_json("Não foi possível registrar agora. Tente novamente em instantes.", 503)
 
-    return jsonify(ok=True, email_notificado=notificar_lead_por_email(lead))
+    return jsonify(ok=True, whatsapp_link=link_whatsapp_do_lead(lead))
 
 
 # ---------------------------------------------------------------------------

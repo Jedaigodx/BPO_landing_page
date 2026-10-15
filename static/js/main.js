@@ -30,6 +30,21 @@
     window.matchMedia("(min-width: 921px)").addEventListener("change", (e) => { if (e.matches) alternar(false); });
   }
 
+  /* Carrosséis compactos nos cards: rolagem suave e controles por toque/clique. */
+  document.querySelectorAll("[data-carousel]").forEach((carrossel) => {
+    const trilha = carrossel.querySelector(".carousel__track");
+    const anterior = carrossel.querySelector("[data-carousel-prev]");
+    const proximo = carrossel.querySelector("[data-carousel-next]");
+    if (!trilha || !anterior || !proximo) return;
+    const mover = (direcao) => {
+      const cartao = trilha.querySelector(":scope > li, :scope > .operations-card");
+      const distancia = cartao ? cartao.getBoundingClientRect().width + 16 : trilha.clientWidth * 0.8;
+      trilha.scrollBy({ left: direcao * distancia, behavior: "smooth" });
+    };
+    anterior.addEventListener("click", () => mover(-1));
+    proximo.addEventListener("click", () => mover(1));
+  });
+
   /* ------------------------------------------------------------------
      Barra de contato no celular: aparece depois do hero,
      some quando o formulário está na tela
@@ -128,11 +143,14 @@
         const resultado = await resposta.json().catch(() => ({}));
 
         if (resposta.ok && resultado.ok) {
-          status.textContent = resultado.email_notificado
-            ? "Pedido recebido e encaminhado para contato. Obrigado por falar com a Balestra."
-            : "Pedido recebido. Obrigado por falar com a Balestra; seu contato ficou registrado.";
-          status.className = "form__status is-ok";
-          form.reset();
+          if (resultado.whatsapp_link) {
+            status.textContent = "Dados registrados. O WhatsApp abrirá com a mensagem pronta; revise e toque em enviar para falar com a Balestra.";
+            status.className = "form__status is-ok";
+            window.location.assign(resultado.whatsapp_link);
+          } else {
+            status.textContent = "Dados registrados, mas o WhatsApp ainda não está configurado. Tente novamente mais tarde.";
+            status.className = "form__status is-error";
+          }
         } else if (resultado.erros) {
           mostrarErros(resultado.erros);
           status.textContent = "Revise os campos destacados e envie de novo.";
