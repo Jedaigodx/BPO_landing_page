@@ -178,7 +178,7 @@
     </div>
 
     <form class="form" id="form-cotacao" novalidate>
-      <div class="form__heading"><h3>Fale sobre o projeto</h3><p>Os campos com * são necessários para retornarmos.</p></div>
+      <div class="form__heading"><h3>Fale sobre a sua clínica</h3><p>Os campos com * são necessários para retornarmos.</p></div>
       <div class="field"><label for="nome">Seu nome *</label><input id="nome" name="nome" type="text" autocomplete="name" maxlength="120" required><p class="field__error" data-error-for="nome"></p></div>
       <div class="field-row">
         <div class="field"><label for="whatsapp">WhatsApp *</label><input id="whatsapp" name="whatsapp" type="tel" inputmode="tel" autocomplete="tel-national" placeholder="(62) 91234-5678" maxlength="20" required><p class="field__error" data-error-for="whatsapp"></p></div>
@@ -193,7 +193,7 @@
       <div class="field"><label for="mensagem">Contexto do projeto</label><textarea id="mensagem" name="mensagem" rows="4" maxlength="1000" placeholder="Qual desafio ou processo você gostaria de analisar?"></textarea><p class="field__hint">Não inclua dados pessoais ou clínicos de pacientes.</p></div>
       <div class="hp" aria-hidden="true"><label for="site">Não preencha este campo</label><input id="site" name="site" type="text" tabindex="-1" autocomplete="off"></div>
       <div class="field"><label class="check check--consent"><input type="checkbox" name="consentimento" id="consentimento"><span>Li a <a href="{{ url_for('privacidade') }}" target="_blank" rel="noopener">política de privacidade</a> e estou ciente de que os dados serão incluídos na mensagem do WhatsApp para eu revisar e enviar.</span></label><p class="field__error" data-error-for="consentimento"></p></div>
-      <button class="btn btn--primary btn--block btn--lg" type="submit" id="form-enviar">💬 Continuar pelo WhatsApp</button>
+      <button class="btn btn--primary btn--block btn--lg" type="submit" id="form-enviar">💬 Solicitar Diagnóstico Gratuito</button>
       <p class="form__status" id="form-status" role="status" aria-live="polite"></p>
     </form>
   </div>
