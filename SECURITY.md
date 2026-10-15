@@ -14,6 +14,7 @@ Este documento descreve a implementação observada no código. Não é uma cert
 | Cabeçalhos | CSP restritiva, `X-Content-Type-Options`, `X-Frame-Options`, `Referrer-Policy`, `Permissions-Policy` e cabeçalhos Cross-Origin; HSTS quando a requisição é reconhecida como HTTPS. |
 | Logs | Erros de banco retornam mensagem genérica e não incluem a exceção ou os dados do lead no log da aplicação. |
 | Coleta | O formulário pede dados de contato e informações gerais da clínica, proíbe dados de pacientes na orientação e não tem upload de arquivos. |
+| E-mail de leads | Com `LEADS_EMAIL`, `GMAIL_ADDRESS` e `GMAIL_APP_PASSWORD`, envia notificação por SMTP SSL depois de salvar o pedido; uma falha de e-mail não apaga o registro do banco. |
 | Testes | `test_seguranca.py` foi ajustado para SQLite em memória, isolando-o do banco local e do PostgreSQL externo. |
 
 ## Achados desta revisão
@@ -26,7 +27,7 @@ Se uma credencial real já tiver sido enviada ao GitHub em qualquer commit, revo
 
 ### Dados pessoais e de saúde
 
-Os leads do formulário contêm dados pessoais de contato e ficam no PostgreSQL até serem removidos; não existe rotina automática de retenção ou exclusão. Defina um prazo, restrinja quem pode consultar a tabela e estabeleça como atender solicitações de titulares. A política de privacidade ainda tem campos empresariais e de retenção a completar.
+Os leads do formulário contêm dados pessoais de contato e ficam no PostgreSQL até serem removidos; não existe rotina automática de retenção ou exclusão. Quando configurado, os mesmos dados também são enviados à caixa Gmail definida em `LEADS_EMAIL`. Restrinja o acesso à caixa postal e às variáveis do Railway, defina um prazo de retenção e estabeleça como atender solicitações de titulares. A política de privacidade ainda tem campos empresariais e de retenção a completar.
 
 O formulário não foi projetado para receber prontuários ou dados de saúde. Se a operação BPO vier a acessar dados de pacientes, faça avaliação específica antes do início: finalidade, necessidade, acesso mínimo, compartilhamento, segurança, retenção/descarte, resposta a incidentes e obrigações contratuais. A função de controlador ou operador depende de quem determina as finalidades e os meios essenciais do tratamento em cada fluxo; não deve ser presumida apenas pelo nome do contrato. Encaminhe contratos e interpretação jurídica a profissional qualificado.
 
@@ -36,10 +37,11 @@ O formulário não foi projetado para receber prontuários ou dados de saúde. S
 2. **Rate limit sujeito a concorrência:** o limite atual conta registros e depois insere; requisições simultâneas podem ultrapassá-lo. Considere um limitador atômico externo se houver abuso.
 3. **`db.create_all()` não migra schema:** cria tabelas ausentes, mas não atualiza com segurança tabelas existentes. Adote migrações versionadas antes de alterações de dados/modelos em produção.
 4. **Dependências:** as versões estão fixadas em `requirements.txt`, mas não foi executada nesta revisão uma auditoria de avisos de segurança das dependências. Rode `pip-audit -r requirements.txt` antes de publicar e periodicamente.
-5. **Proxy confiável:** `ProxyFix` confia em um salto quando Railway está configurado ou `TRUST_PROXY=1`. Não ative essa variável sem um proxy controlado à frente da aplicação, pois cabeçalhos encaminhados podem ser falsificados.
-6. **Banco:** use a conexão privada do Railway, limite acesso administrativo, habilite autenticação forte na conta do provedor e confirme backups e recuperação. O app não cifra individualmente os campos da tabela.
-7. **WhatsApp:** o link transmite apenas uma mensagem genérica pré-preenchida; o visitante decide quando enviá-la. A conversa passa a ser tratada pelo WhatsApp e não pelo banco deste app. Não envie dados de pacientes por esse canal sem um fluxo e controles aprovados para tal finalidade.
-8. **Privacidade da página:** complete responsável, CNPJ, canal de contato e retenção no aviso de privacidade e obtenha revisão profissional antes da publicação.
+5. **E-mail:** configure credenciais somente nas variáveis privadas do Railway. Proteja o Gmail remetente com verificação em duas etapas e senha de app, e restrinja o acesso à caixa de leads. Falhas são registradas sem conteúdo do contato.
+6. **Proxy confiável:** `ProxyFix` confia em um salto quando Railway está configurado ou `TRUST_PROXY=1`. Não ative essa variável sem um proxy controlado à frente da aplicação, pois cabeçalhos encaminhados podem ser falsificados.
+7. **Banco:** use a conexão privada do Railway, limite acesso administrativo, habilite autenticação forte na conta do provedor e confirme backups e recuperação. O app não cifra individualmente os campos da tabela.
+8. **WhatsApp:** o link transmite apenas uma mensagem genérica pré-preenchida; o visitante decide quando enviá-la. A conversa passa a ser tratada pelo WhatsApp e não pelo banco deste app. Não envie dados de pacientes por esse canal sem um fluxo e controles aprovados para tal finalidade.
+9. **Privacidade da página:** complete responsável, CNPJ, canal de contato e retenção no aviso de privacidade e obtenha revisão profissional antes da publicação.
 
 ## Medidas recomendadas no GitHub
 

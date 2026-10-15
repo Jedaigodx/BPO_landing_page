@@ -55,6 +55,15 @@
     const campoZap = form.elements["whatsapp"];
     const caixasInteresse = [...form.querySelectorAll('input[name="interesse"]')];
 
+    document.querySelectorAll("[data-interesse]").forEach((link) => {
+      link.addEventListener("click", () => {
+        const alvo = caixasInteresse.find((caixa) => caixa.value === link.dataset.interesse);
+        if (alvo) {
+          caixasInteresse.forEach((caixa) => { caixa.checked = caixa === alvo; });
+        }
+      });
+    });
+
     // "Ainda não sei" é exclusivo
     caixasInteresse.forEach((c) => {
       c.addEventListener("change", () => {
@@ -119,7 +128,9 @@
         const resultado = await resposta.json().catch(() => ({}));
 
         if (resposta.ok && resultado.ok) {
-          status.textContent = "Recebemos seu pedido de cotação. Entraremos em contato em breve.";
+          status.textContent = resultado.email_notificado
+            ? "Pedido recebido e encaminhado para contato. Obrigado por falar com a Balestra."
+            : "Pedido recebido. Obrigado por falar com a Balestra; seu contato ficou registrado.";
           status.className = "form__status is-ok";
           form.reset();
         } else if (resultado.erros) {

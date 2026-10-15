@@ -8,7 +8,9 @@ import hmac
 import logging
 import os
 import re
+import smtplib
 from datetime import datetime, timedelta, timezone
+from email.message import EmailMessage
 from pathlib import Path
 from urllib.parse import quote, urlparse
 
@@ -69,7 +71,7 @@ db = SQLAlchemy(app)
 # Dados da empresa (deixe vazio enquanto não estiverem definidos)
 # ---------------------------------------------------------------------------
 EMPRESA = {
-    "nome": "",
+    "nome": "Balestra Contas Médicas",
     "cnpj": "",
     "cidade": "Goiânia, GO",
     "telefone": "",
@@ -82,8 +84,8 @@ WHATSAPP_NUMBER = re.sub(r"\D", "", os.environ.get("WHATSAPP_NUMBER", ""))
 if WHATSAPP_NUMBER and not (WHATSAPP_NUMBER.startswith("55") and len(WHATSAPP_NUMBER) in (12, 13)):
     WHATSAPP_NUMBER = ""
 WHATSAPP_MESSAGE = (
-    "Olá! Gostaria de receber mais informações sobre os serviços de auditoria, "
-    "faturamento e gestão do ciclo de receita para a minha clínica. "
+    "Olá! Preciso de mais informações sobre os serviços da Balestra Contas Médicas. "
+    "Tenho interesse em faturamento, auditoria ou gestão completa do ciclo de receita. "
     "Como podemos conversar sobre um projeto?"
 )
 WHATSAPP_LINK = (
@@ -95,12 +97,15 @@ WHATSAPP_LINK = (
 # Conteúdo
 # ---------------------------------------------------------------------------
 AREAS = [
-    {"id": "auditoria", "icone": "auditoria", "titulo": "Auditoria e diagnóstico do ciclo de receita",
-     "texto": "Mapeamento de perdas, glosas, autorizações, documentação e aderência às regras aplicáveis."},
-    {"id": "faturamento", "icone": "fatura", "titulo": "Faturamento e gestão de recebíveis",
-     "texto": "Apoio à conferência, envio, acompanhamento de contas, análise de glosas, recursos e conciliação."},
-    {"id": "contratual", "icone": "ajuste", "titulo": "Assessoria técnico-contratual",
-     "texto": "Análise operacional de tabelas, pacotes, regras de cobrança, prazos e impactos econômicos."},
+    {"id": "faturamento", "icone": "fatura", "titulo": "Faturamento médico",
+     "resumo": "Organização, conferência e envio de contas.",
+     "texto": "Apoio dedicado ao faturamento de convênios e particulares, com acompanhamento de pendências e prazos."},
+    {"id": "auditoria", "icone": "auditoria", "titulo": "Auditoria de contas médicas",
+     "resumo": "Revisão de contas, regras e oportunidades.",
+     "texto": "Análise independente de processos e contas para identificar divergências, causas de glosa e prioridades."},
+    {"id": "ciclo_completo", "icone": "ajuste", "titulo": "Gestão completa do ciclo de receita",
+     "resumo": "Da produção ao recebimento e repasse.",
+     "texto": "Atuação integrada em faturamento, auditoria, envio, acompanhamento de recebimentos, repasses e indicadores de BI."},
 ]
 
 PASSOS = [
@@ -157,7 +162,7 @@ def filtro_milhar(valor):
 
 @app.context_processor
 def contexto_global():
-    return {"empresa": EMPRESA, "nome_empresa": EMPRESA["nome"] or "Gestão de Receita em Saúde",
+    return {"empresa": EMPRESA, "nome_empresa": EMPRESA["nome"] or "Balestra Contas Médicas",
             "ano": datetime.now().year, "whatsapp_link": WHATSAPP_LINK}
 
 
@@ -253,6 +258,43 @@ EMAIL_RE = re.compile(r"^[^@\s]+@[^@\s]+\.[^@\s]+$")
 CONTROLE_RE = re.compile(r"[\x00-\x08\x0b\x0c\x0e-\x1f\x7f]")
 IDS_INTERESSE = {a["id"] for a in AREAS} | {"indefinido"}
 LIMITE_POR_HORA = 5
+
+
+def notificar_lead_por_email(lead):
+    """Envia aviso ao Gmail configurado; o lead já estará persistido no banco."""
+    remetente = os.environ.get("GMAIL_ADDRESS", "").strip()
+    senha_app = os.environ.get("GMAIL_APP_PASSWORD", "").replace(" ", "")
+    destinatario = os.environ.get("LEADS_EMAIL", "").strip()
+    if not all((remetente, senha_app, destinatario)):
+        return False
+    if not EMAIL_RE.match(remetente) or not EMAIL_RE.match(destinatario):
+        app.logger.warning("Configuração de e-mail de contato inválida.")
+        return False
+
+    mensagem = EmailMessage()
+    mensagem["Subject"] = "Novo contato — Balestra Contas Médicas"
+    mensagem["From"] = remetente
+    mensagem["To"] = destinatario
+    mensagem["Reply-To"] = lead["email"]
+    mensagem.set_content(
+        "Novo pedido de contato recebido pelo site Balestra Contas Médicas.\n\n"
+        f"Nome: {lead['nome']}\nE-mail: {lead['email']}\nWhatsApp: {lead['whatsapp']}\n"
+        f"Clínica: {lead['instituicao'] or 'Não informado'}\n"
+        f"Volume mensal: {lead['volume_guias'] or 'Não informado'}\n"
+        f"Convênios: {lead['convenios'] or 'Não informado'}\n"
+        f"Interesse: {lead['interesse'] or 'Não informado'}\n\n"
+        f"Mensagem:\n{lead['mensagem'] or 'Não informada'}\n\n"
+        "Não encaminhe dados de pacientes por e-mail."
+    )
+    try:
+        with smtplib.SMTP_SSL("smtp.gmail.com", 465, timeout=8) as smtp:
+            smtp.login(remetente, senha_app)
+            smtp.send_message(mensagem)
+        return True
+    except (OSError, smtplib.SMTPException):
+        # Não registrar exceção nem os dados do lead. O pedido permanece salvo no banco.
+        app.logger.warning("Não foi possível enviar a notificação de novo contato por e-mail.")
+        return False
 
 
 def _texto(valor, limite, multilinha=False):
@@ -355,7 +397,7 @@ def contato():
         app.logger.error("Falha ao gravar cotação.", exc_info=False)
         return _erro_json("Não foi possível registrar agora. Tente novamente em instantes.", 503)
 
-    return jsonify(ok=True)
+    return jsonify(ok=True, email_notificado=notificar_lead_por_email(lead))
 
 
 # ---------------------------------------------------------------------------

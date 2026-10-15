@@ -5,9 +5,9 @@
 <section class="hero" id="inicio">
   <div class="wrap hero__grid">
     <div class="hero__text">
-      <p class="eyebrow">GESTÃO DO CICLO DE RECEITA EM SAÚDE · {{ empresa.cidade }}</p>
+      <p class="eyebrow">BALESTRA CONTAS MÉDICAS · {{ empresa.cidade }}</p>
       <h1>Mais clareza entre o atendimento realizado e o valor recebido.</h1>
-      <p class="lead">Apoiamos clínicas e prestadores de saúde a identificar perdas, organizar o faturamento e tomar decisões com base no que acontece em cada etapa da receita.</p>
+      <p class="lead">Faturamento ou auditoria sob medida — ou apoio completo, da conta médica ao recebimento e repasse. Com processos claros e indicadores de BI para orientar decisões.</p>
       <div class="hero__actions">
         {% if whatsapp_link %}<a class="btn btn--primary btn--lg" href="{{ whatsapp_link }}" target="_blank" rel="noopener noreferrer">Conversar pelo WhatsApp</a>{% else %}<a class="btn btn--primary btn--lg" href="#conversa">Conversar sobre um projeto</a>{% endif %}
         <a class="btn btn--ghost btn--lg" href="#atuacao">Conhecer a atuação</a>
@@ -30,7 +30,7 @@
 
 <section class="value-band" aria-label="Proposta de valor">
   <div class="wrap value-band__inner">
-    <p>Uma visão integrada de <strong>auditoria</strong>, <strong>faturamento</strong> e <strong>gestão</strong> para fortalecer o resultado do prestador.</p>
+    <p>Você escolhe o escopo: <strong>faturamento</strong>, <strong>auditoria</strong> ou gestão completa com <strong>indicadores de BI</strong>.</p>
   </div>
 </section>
 
@@ -41,10 +41,10 @@
       <p>Quando poucas pessoas cuidam da recepção, do atendimento e do faturamento, pendências pequenas podem se acumular. O primeiro passo é enxergar o processo completo, sem atribuir culpa à equipe.</p>
     </div>
     <ul class="pain-grid">
-      <li><span>01</span><h3>Regras diferentes, prazos diferentes</h3><p>Convênios podem exigir tabelas, portais, documentos, padrões de envio e datas de corte próprios. A rotina precisa acompanhar as regras vigentes e o que foi contratado.</p></li>
-      <li><span>02</span><h3>Retrabalho entre atendimento e faturamento</h3><p>Informações incompletas, autorizações pendentes ou registros inconsistentes voltam para a equipe e atrasam o fechamento das contas.</p></li>
-      <li><span>03</span><h3>Glosas e recebimentos sem conciliação</h3><p>Sem acompanhar o que foi produzido, faturado, pago e contestado, fica difícil entender a origem das diferenças e agir dentro dos prazos.</p></li>
-      <li><span>04</span><h3>Processos particulares pouco padronizados</h3><p>Cadastro, orientações, registros administrativos, cobrança e acompanhamento de valores podem variar conforme a pessoa que executa a rotina.</p></li>
+      <li><details class="expand-card"><summary><span>01</span><strong>Regras e prazos por convênio</strong></summary><p>Tabelas, portais, documentos, padrões de envio e datas de corte variam. A rotina precisa acompanhar as regras vigentes e o que foi contratado.</p></details></li>
+      <li><details class="expand-card"><summary><span>02</span><strong>Retrabalho entre atendimento e faturamento</strong></summary><p>Informações incompletas, autorizações pendentes ou registros inconsistentes voltam para a equipe e atrasam o fechamento das contas.</p></details></li>
+      <li><details class="expand-card"><summary><span>03</span><strong>Glosas e recebimentos sem conciliação</strong></summary><p>Sem acompanhar produção, faturamento, pagamentos e contestações, fica difícil entender diferenças e agir nos prazos.</p></details></li>
+      <li><details class="expand-card"><summary><span>04</span><strong>Rotinas particulares sem padrão</strong></summary><p>Cadastro, registros administrativos, cobrança e acompanhamento podem variar conforme a pessoa que executa a rotina.</p></details></li>
     </ul>
   </div>
 </section>
@@ -58,20 +58,29 @@
     <ul class="service-grid">
       {% for a in areas %}
       <li class="service-card">
+        <details class="service-details">
         <span class="service-card__number">0{{ loop.index }}</span>
-        <h3>{{ a.titulo }}</h3>
+        <summary><strong>{{ a.titulo }}</strong><span class="service-summary">{{ a.resumo }}</span></summary>
         <p>{{ a.texto }}</p>
         {% if a.id == 'auditoria' %}
         <ul class="service-card__list"><li>Mapeamento do caminho da produção até o pagamento</li><li>Identificação de divergências, pendências e causas de glosa</li><li>Priorização de ajustes com base em evidências</li></ul>
         {% elif a.id == 'faturamento' %}
         <ul class="service-card__list"><li>Conferência de guias, cadastro, autorização e documentos</li><li>Acompanhamento de lotes, prazos, demonstrativos e recursos</li><li>Conciliação do faturado, recebido e ainda pendente</li></ul>
         {% else %}
-        <ul class="service-card__list"><li>Leitura operacional das condições e tabelas contratadas</li><li>Rotinas para atendimento por convênio e particular</li><li>Organização de procedimentos e responsabilidades</li></ul>
+        <ul class="service-card__list"><li>Faturamento, auditoria e envio de contas</li><li>Acompanhamento de recebimentos, glosas e repasses</li><li>Indicadores de BI sobre o ciclo de receita</li></ul>
         {% endif %}
-        <a href="#conversa" aria-label="Conversar sobre {{ a.titulo }}">Conversar sobre este serviço <span aria-hidden="true">↗</span></a>
+        <a href="#conversa" data-interesse="{{ a.id }}" aria-label="Conversar sobre {{ a.titulo }}">Tenho interesse <span aria-hidden="true">↗</span></a>
+        </details>
       </li>
       {% endfor %}
     </ul>
+  </div>
+</section>
+
+<section class="bi-band" id="indicadores">
+  <div class="wrap bi-band__inner">
+    <div><p class="eyebrow">UM DIFERENCIAL BALESTRA</p><h2>Indicadores de BI para enxergar o ciclo com mais clareza.</h2><p>Transformamos dados operacionais disponíveis em informações úteis para acompanhar a rotina e apoiar decisões.</p></div>
+    <div class="bi-points" aria-label="Exemplos de indicadores que podem ser acompanhados"><span>Produzido × faturado × recebido</span><span>Glosas e pendências por etapa</span><span>Recebíveis e repasses</span></div>
   </div>
 </section>
 
@@ -83,19 +92,19 @@
       <p>As recomendações partem do fluxo real da clínica e consideram os requisitos aplicáveis a cada tipo de atendimento.</p>
     </div>
     <div class="operations-grid">
-      <article class="operations-card">
-        <p class="eyebrow">SISTEMAS</p><h3>Trabalhamos com o que a clínica já usa, quando o fluxo permitir.</h3>
+      <details class="operations-card expand-card">
+        <summary><span class="eyebrow">SISTEMAS</span><strong>Trabalhamos com o que a clínica já usa.</strong></summary>
         <p>Mapeamos os recursos do sistema atual, os acessos e os pontos em que a equipe ainda depende de controles paralelos. Se identificarmos uma lacuna, podemos sugerir alternativas considerando adequação ao processo, integração, custo e gestão de acesso e dados. A decisão de adotar ou trocar permanece com a clínica.</p>
-      </article>
-      <article class="operations-card">
-        <p class="eyebrow">PADRONIZAÇÃO</p><h3>Rotinas claras para convênios e atendimentos particulares.</h3>
+      </details>
+      <details class="operations-card expand-card">
+        <summary><span class="eyebrow">PADRONIZAÇÃO</span><strong>Rotinas claras para convênios e particulares.</strong></summary>
         <p>Para a saúde suplementar, avaliamos requisitos de troca de informações, regras do contrato, tabelas e prazos de cada operadora — incluindo o padrão TISS vigente quando aplicável. Para atendimentos particulares, ajudamos a organizar registros administrativos, fluxo de cobrança e acompanhamento de recebíveis.</p>
         <a class="text-link" href="https://www.gov.br/ans/pt-br/assuntos/prestadores/padrao-para-troca-de-informacao-de-saude-suplementar-2013-tiss/" target="_blank" rel="noopener noreferrer">Consultar o padrão TISS na ANS <span aria-hidden="true">↗</span></a>
-      </article>
-      <article class="operations-card operations-card--wide">
-        <p class="eyebrow">PRIVACIDADE E LGPD</p><h3>Dados de saúde exigem cuidado em cada etapa do processo.</h3>
+      </details>
+      <details class="operations-card operations-card--wide expand-card">
+        <summary><span class="eyebrow">PRIVACIDADE E LGPD</span><strong>Dados de saúde exigem cuidado em cada etapa.</strong></summary>
         <p>Ajudamos a estruturar fluxos com finalidade definida, acesso mínimo necessário, compartilhamento controlado, responsabilidades documentadas e critérios de retenção e descarte alinhados ao projeto. Antes de qualquer operação com dados, o escopo, as instruções e os papéis das partes precisam estar definidos. Não prometemos certificação nem substituímos assessoria jurídica ou o encarregado de dados da clínica.</p>
-      </article>
+      </details>
     </div>
   </div>
 </section>
@@ -133,7 +142,7 @@
   <div class="wrap about-card">
     <div class="about-card__label"><p class="eyebrow">ATUAÇÃO TÉCNICA</p><span>Goiânia, GO</span></div>
     <div>
-      <h2>Gestão de receita em saúde com responsabilidade e proximidade.</h2>
+      <h2>Balestra Contas Médicas: gestão de receita com responsabilidade e proximidade.</h2>
       <p>Atuamos na análise de contas médicas, faturamento e processos que afetam o recebimento dos prestadores. Conforme o projeto, integramos competências técnicas especializadas para entregar uma solução coerente com as necessidades e responsabilidades de cada operação.</p>
       <a class="text-link" href="#conversa">Apresente o cenário da sua clínica <span aria-hidden="true">↗</span></a>
     </div>
