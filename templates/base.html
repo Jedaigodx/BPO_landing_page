@@ -4,8 +4,8 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-  <title>{% block titulo %}{{ nome_empresa }} | Faturamento e auditoria de guias médicas em Goiânia{% endblock %}</title>
-  <meta name="description" content="{% block descricao %}Auditoria de contas médicas, pré-faturamento, faturamento e repasse médico com métricas claras. Atendimento presencial em Goiânia. Peça uma cotação.{% endblock %}">
+  <title>{% block titulo %}{{ nome_empresa }} | Gestão do ciclo de receita em saúde{% endblock %}</title>
+  <meta name="description" content="{% block descricao %}Auditoria, faturamento e gestão do ciclo de receita em saúde para clínicas e prestadores. Conheça um projeto de diagnóstico inicial em Goiânia.{% endblock %}">
   <meta name="theme-color" content="#F2F6F7">
   {% block robots %}{% endblock %}
   <link rel="preload" href="{{ url_for('static', filename='fonts/bricolage-grotesque-latin-wght-normal.woff2') }}" as="font" type="font/woff2" crossorigin>
@@ -20,7 +20,7 @@
     <div class="wrap site-header__in">
       <a class="brand" href="{{ url_for('index') }}" aria-label="{{ nome_empresa }}, início">
         {{ marca(36) }}
-        <span class="brand__name{% if not empresa.nome %} is-placeholder{% endif %}">{{ nome_empresa }}</span>
+        <span class="brand__name">{{ nome_empresa }}</span>
       </a>
 
       <button class="nav-toggle" type="button" id="nav-toggle" aria-expanded="false" aria-controls="nav">
@@ -29,11 +29,10 @@
       </button>
 
       <nav class="nav" id="nav" aria-label="Principal">
-        <a href="{{ url_for('index') }}#areas">Onde atuamos</a>
-        <a href="{{ url_for('index') }}#como-funciona">Como funciona</a>
-        <a href="{{ url_for('index') }}#metricas">Métricas</a>
+        <a href="{{ url_for('index') }}#atuacao">Atuação</a>
+        <a href="{{ url_for('index') }}#metodo">Como trabalhamos</a>
         <a href="{{ url_for('index') }}#duvidas">Dúvidas</a>
-        <a class="btn btn--primary btn--small nav__cta" href="{{ url_for('index') }}#cotacao">Solicitar cotação</a>
+        <a class="btn btn--primary btn--small nav__cta" href="{{ url_for('index') }}#conversa">Conversar sobre um projeto</a>
       </nav>
     </div>
   </header>
@@ -47,11 +46,11 @@
       <div class="footer__brand">
         {{ marca(32) }}
         <div>
-          <strong class="{% if not empresa.nome %}is-placeholder{% endif %}">{{ nome_empresa }}</strong>
-          <span>CNPJ {% if empresa.cnpj %}{{ empresa.cnpj }}{% else %}<span class="blank"></span>{% endif %}</span>
+          <strong>{{ nome_empresa }}</strong>
+          {% if empresa.cnpj %}<span>CNPJ {{ empresa.cnpj }}</span>{% endif %}
         </div>
       </div>
-      <p>Faturamento e auditoria de guias médicas. {{ empresa.cidade }}.</p>
+      <p>Auditoria e gestão do ciclo de receita em saúde. {{ empresa.cidade }}.</p>
       <p class="footer__copy">&copy; {{ ano }} {{ nome_empresa }}. Todos os direitos reservados. <a href="{{ url_for('privacidade') }}">Política de privacidade</a></p>
     </div>
   </footer>

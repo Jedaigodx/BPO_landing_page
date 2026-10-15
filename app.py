@@ -81,118 +81,40 @@ EMPRESA = {
 # Conteúdo
 # ---------------------------------------------------------------------------
 AREAS = [
-    {"id": "auditoria", "icone": "auditoria", "titulo": "Auditoria de contas médicas",
-     "texto": "Conferência de guias, prontuários e contratos para encontrar o erro antes do convênio."},
-    {"id": "pre-faturamento", "icone": "escudo", "titulo": "Pré-faturamento",
-     "texto": "Checagem de cadastro, autorização e códigos antes do envio."},
-    {"id": "faturamento", "icone": "fatura", "titulo": "Faturamento",
-     "texto": "Montagem e envio dos lotes, acompanhamento de protocolos e recurso de glosa."},
-    {"id": "repasse", "icone": "repasse", "titulo": "Repasse médico",
-     "texto": "Cálculo do repasse por profissional, com demonstrativo para conferência."},
+    {"id": "auditoria", "icone": "auditoria", "titulo": "Auditoria e diagnóstico do ciclo de receita",
+     "texto": "Mapeamento de perdas, glosas, autorizações, documentação e aderência às regras aplicáveis."},
+    {"id": "faturamento", "icone": "fatura", "titulo": "Faturamento e gestão de recebíveis",
+     "texto": "Apoio à conferência, envio, acompanhamento de contas, análise de glosas, recursos e conciliação."},
+    {"id": "contratual", "icone": "ajuste", "titulo": "Assessoria técnico-contratual",
+     "texto": "Análise operacional de tabelas, pacotes, regras de cobrança, prazos e impactos econômicos."},
 ]
 
 PASSOS = [
     {"titulo": "Conversa e diagnóstico",
-     "texto": "Você pede a cotação e nós visitamos a operação para entender convênios, fluxo de guias e onde a receita escapa."},
+     "texto": "Entendemos convênios, fluxo de guias e os pontos que a equipe gostaria de investigar."},
     {"titulo": "Escopo combinado",
-     "texto": "Definimos juntos quais etapas do ciclo fazem sentido agora. Nada de pacote fechado."},
-    {"titulo": "Rotina mensal",
-     "texto": "Conferimos, faturamos e acompanhamos os retornos, em contato direto com recepção e financeiro."},
-    {"titulo": "Leitura dos números",
-     "texto": "Entregamos o relatório e sentamos com você para decidir o que ajustar no mês seguinte."},
-]
-
-DIFERENCIAIS = [
-    {"icone": "local", "titulo": "Presença em Goiânia",
-     "texto": "Acompanhamos a operação de perto, sem depender só de e-mail e planilha."},
-    {"icone": "grafico", "titulo": "Decisão com dados",
-     "texto": "Cruzamos faturamento, glosa e recebimento para mostrar onde agir primeiro."},
-    {"icone": "ajuste", "titulo": "Escopo sob medida",
-     "texto": "A contratação acompanha o que a operação precisa hoje e cresce depois."},
-    {"icone": "cadeado", "titulo": "Sigilo e LGPD",
-     "texto": "Dados tratados com confidencialidade e acesso restrito à equipe responsável."},
+     "texto": "Avaliamos uma amostra delimitada e apresentamos evidências, prioridades e possibilidades de trabalho."},
+    {"titulo": "Projeto e acompanhamento",
+     "texto": "Se houver aderência, detalhamos em proposta as etapas, responsabilidades e indicadores do projeto."},
 ]
 
 FAQ = [
-    {"p": "Como funciona a cotação?",
-     "r": "Você preenche o formulário, conversamos para entender a sua operação e enviamos uma proposta com o escopo combinado. Não há compromisso."},
-    {"p": "Preciso contratar o ciclo completo?",
-     "r": "Não. Você pode contratar só a auditoria, só o faturamento ou qualquer combinação entre as etapas. O escopo é definido junto com você."},
-    {"p": "O atendimento é presencial?",
-     "r": "Sim, em Goiânia. A equipe visita a sua operação no diagnóstico e nos acompanhamentos combinados."},
-    {"p": "Com quais convênios vocês trabalham?",
-     "r": "Com os convênios e tabelas que a sua operação já utiliza. Na primeira conversa mapeamos quais são e o que cada um exige."},
-    {"p": "Para qual porte de operação vocês trabalham?",
-     "r": "A rotina é adaptada ao volume de guias e ao número de convênios de cada operação."},
-    {"p": "Que métricas eu recebo?",
-     "r": "Um relatório periódico com faturamento, glosas, recebimentos e repasse, e uma conversa para decidir o que ajustar. Os indicadores são definidos com você."},
-    {"p": "Como os dados são protegidos?",
-     "r": "Com acesso restrito à equipe responsável e tratamento conforme a LGPD. Pedimos que o formulário de cotação não contenha dados de pacientes."},
+    {"p": "Como começa o projeto?",
+     "r": "Começamos com uma conversa para entender a operação. O diagnóstico inicial pode analisar uma amostra delimitada da produção, faturamento e recebimentos; o escopo é alinhado antes do início."},
+    {"p": "O diagnóstico inicial tem custo?",
+     "r": "A proposta inicial prevê um diagnóstico gratuito e delimitado. A implementação de melhorias ou o acompanhamento recorrente são avaliados e apresentados em proposta própria."},
+    {"p": "Preciso contratar todos os serviços?",
+     "r": "Não necessariamente. O escopo é definido conforme os pontos identificados e as prioridades do prestador."},
+    {"p": "Quais convênios são avaliados?",
+     "r": "Mapeamos os convênios e as regras aplicáveis à sua operação durante a conversa inicial. A viabilidade depende do escopo e dos materiais disponíveis."},
+    {"p": "Que informações devo enviar?",
+     "r": "No formulário, compartilhe apenas informações gerais sobre a operação. Não envie nomes, prontuários ou outros dados pessoais de pacientes."},
+    {"p": "Como os dados são tratados?",
+     "r": "O tratamento das informações do projeto deve seguir o escopo contratado, as responsabilidades definidas e medidas adequadas de confidencialidade e proteção de dados."},
 ]
 
 VOLUMES_GUIAS = ["Até 500 por mês", "De 500 a 2.000 por mês", "De 2.000 a 10.000 por mês",
                  "Mais de 10.000 por mês", "Não sei informar"]
-
-LOTE_DEMO = [
-    {"guia": "0001284", "convenio": "Convênio A", "procedimento": "Consulta eletiva",
-     "valor": 180.00, "resultado": "ok"},
-    {"guia": "0001285", "convenio": "Convênio B", "procedimento": "Ultrassonografia de abdome total",
-     "valor": 260.00, "resultado": "erro",
-     "motivo": "Código do procedimento diverge da tabela do convênio"},
-    {"guia": "0001286", "convenio": "Convênio A", "procedimento": "Eletrocardiograma",
-     "valor": 95.00, "resultado": "ok"},
-    {"guia": "0001287", "convenio": "Convênio C", "procedimento": "Painel de exames laboratoriais",
-     "valor": 410.00, "resultado": "erro", "motivo": "Falta autorização prévia"},
-    {"guia": "0001288", "convenio": "Convênio B", "procedimento": "Consulta de retorno",
-     "valor": 150.00, "resultado": "ok"},
-    {"guia": "0001289", "convenio": "Convênio C", "procedimento": "Sessão de fisioterapia",
-     "valor": 120.00, "resultado": "erro", "motivo": "Carteirinha com validade vencida"},
-]
-
-MESES = ["Jan", "Fev", "Mar", "Abr", "Mai", "Jun", "Jul", "Ago", "Set", "Out", "Nov", "Dez"]
-FATURADO_MIL = [212, 228, 219, 241, 255, 249, 263, 271, 268, 284, 292, 301]
-RECEBIDO_MIL = [188, 205, 201, 219, 236, 233, 248, 259, 257, 273, 281, 290]
-
-GLOSA_POR_CONVENIO = [
-    {"nome": "Convênio A", "pct": 3.1}, {"nome": "Convênio B", "pct": 5.8},
-    {"nome": "Convênio C", "pct": 7.4}, {"nome": "Convênio D", "pct": 2.2},
-]
-
-REPASSE_DEMO = [
-    {"grupo": "Clínica geral", "guias": 512, "faturado": 98500, "taxa": 0.68},
-    {"grupo": "Cardiologia", "guias": 344, "faturado": 81200, "taxa": 0.70},
-    {"grupo": "Ortopedia", "guias": 290, "faturado": 67300, "taxa": 0.65},
-    {"grupo": "Exames de imagem", "guias": 431, "faturado": 54000, "taxa": 0.72},
-]
-
-
-def montar_grafico_linhas(meses, series, largura=640, altura=240, margem_esq=44,
-                          margem_dir=16, margem_sup=16, margem_inf=30, passo=50):
-    """Converte séries numéricas em coordenadas de um gráfico de linhas SVG."""
-    todos = [v for s in series for v in s["valores"]]
-    vmin = (min(todos) // passo) * passo
-    vmax = -(-max(todos) // passo) * passo
-    area_w = largura - margem_esq - margem_dir
-    area_h = altura - margem_sup - margem_inf
-
-    def x(i):
-        return margem_esq + area_w * i / (len(meses) - 1)
-
-    def y(v):
-        return margem_sup + area_h * (1 - (v - vmin) / (vmax - vmin))
-
-    linhas = []
-    for s in series:
-        pts = [(round(x(i), 1), round(y(v), 1)) for i, v in enumerate(s["valores"])]
-        linhas.append({"nome": s["nome"], "classe": s["classe"],
-                       "pontos": " ".join(f"{a},{b}" for a, b in pts), "fim": pts[-1]})
-    return {
-        "largura": largura, "altura": altura, "margem_esq": margem_esq,
-        "margem_dir": margem_dir, "base": altura - margem_inf, "linhas": linhas,
-        "grade": [{"y": round(y(v), 1), "rotulo": v} for v in range(int(vmin), int(vmax) + 1, passo)],
-        "rotulos_x": [{"x": round(x(i), 1), "texto": m} for i, m in enumerate(meses)],
-    }
-
 
 # ---------------------------------------------------------------------------
 # Filtros de formatação (padrão brasileiro)
@@ -215,7 +137,7 @@ def filtro_milhar(valor):
 
 @app.context_processor
 def contexto_global():
-    return {"empresa": EMPRESA, "nome_empresa": EMPRESA["nome"] or "Nome da empresa",
+    return {"empresa": EMPRESA, "nome_empresa": EMPRESA["nome"] or "Gestão de Receita em Saúde",
             "ano": datetime.now().year}
 
 
@@ -294,23 +216,8 @@ def cabecalhos_seguranca(resp):
 # ---------------------------------------------------------------------------
 @app.get("/")
 def index():
-    grafico = montar_grafico_linhas(MESES, [
-        {"nome": "Faturado", "classe": "faturado", "valores": FATURADO_MIL},
-        {"nome": "Recebido", "classe": "recebido", "valores": RECEBIDO_MIL},
-    ])
-    glosa_media = sum(c["pct"] for c in GLOSA_POR_CONVENIO) / len(GLOSA_POR_CONVENIO)
-    kpis = [
-        {"rotulo": "Faturado no mês", "valor": f"R$ {FATURADO_MIL[-1]} mil"},
-        {"rotulo": "Recebido no mês", "valor": f"R$ {RECEBIDO_MIL[-1]} mil"},
-        {"rotulo": "Glosa média", "valor": f"{filtro_decimal(glosa_media)}%"},
-        {"rotulo": "Prazo médio de recebimento", "valor": "38 dias"},
-    ]
-    repasse = [{**r, "repasse": round(r["faturado"] * r["taxa"])} for r in REPASSE_DEMO]
     return render_template(
-        "index.html", areas=AREAS, passos=PASSOS, diferenciais=DIFERENCIAIS, faq=FAQ,
-        volumes=VOLUMES_GUIAS, lote=LOTE_DEMO, grafico=grafico, kpis=kpis,
-        glosa=GLOSA_POR_CONVENIO, glosa_max=max(c["pct"] for c in GLOSA_POR_CONVENIO),
-        repasse=repasse,
+        "index.html", areas=AREAS, passos=PASSOS, faq=FAQ, volumes=VOLUMES_GUIAS,
     )
 
 

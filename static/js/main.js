@@ -1,9 +1,6 @@
 (() => {
   "use strict";
 
-  const reduzirMovimento = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-  const brl = new Intl.NumberFormat("pt-BR", { style: "currency", currency: "BRL" });
-
   /* ------------------------------------------------------------------
      Cabeçalho: borda ao rolar e menu no celular
      ------------------------------------------------------------------ */
@@ -34,102 +31,18 @@
   }
 
   /* ------------------------------------------------------------------
-     Barra de cotação no celular: aparece depois do hero,
+     Barra de contato no celular: aparece depois do hero,
      some quando o formulário está na tela
      ------------------------------------------------------------------ */
   const barra = document.getElementById("cta-bar");
   const hero = document.querySelector(".hero");
-  const secaoCotacao = document.getElementById("cotacao");
-  if (barra && hero && secaoCotacao && "IntersectionObserver" in window) {
+  const secaoContato = document.getElementById("conversa");
+  if (barra && hero && secaoContato && "IntersectionObserver" in window) {
     let heroVisivel = true;
     let formVisivel = false;
     const atualizarBarra = () => barra.classList.toggle("is-visible", !heroVisivel && !formVisivel);
     new IntersectionObserver(([e]) => { heroVisivel = e.isIntersecting; atualizarBarra(); }, { threshold: 0 }).observe(hero);
-    new IntersectionObserver(([e]) => { formVisivel = e.isIntersecting; atualizarBarra(); }, { threshold: 0.1 }).observe(secaoCotacao);
-  }
-
-  /* ------------------------------------------------------------------
-     Mesa de conferência (demo do hero)
-     Roda sozinha uma vez quando aparece na tela e pode ser refeita.
-     ------------------------------------------------------------------ */
-  const mesa = document.getElementById("desk");
-  if (mesa) {
-    const linhas = [...mesa.querySelectorAll(".guia")];
-    const botao = document.getElementById("desk-run");
-    const totalOk = document.getElementById("total-ok");
-    const totalRisco = document.getElementById("total-risk");
-    const barraProgresso = document.getElementById("desk-bar");
-    const esperar = (ms) => new Promise((r) => setTimeout(r, reduzirMovimento ? 0 : ms));
-    let rodando = false;
-
-    const textos = {
-      pending: "Aguardando conferência",
-      checking: "Conferindo…",
-      ok: "Conferida",
-      erro: "Corrigir antes de enviar",
-    };
-
-    const definirEstado = (linha, estado) => {
-      linha.dataset.state = estado;
-      linha.querySelector("[data-status]").textContent = textos[estado];
-    };
-
-    const atualizarTotais = (ok, risco, feitas) => {
-      totalOk.textContent = brl.format(ok);
-      totalRisco.textContent = brl.format(risco);
-      barraProgresso.style.width = `${(feitas / linhas.length) * 100}%`;
-    };
-
-    const zerar = () => {
-      linhas.forEach((l) => {
-        definirEstado(l, "pending");
-        l.querySelector("[data-motivo-texto]").textContent = "";
-      });
-      atualizarTotais(0, 0, 0);
-    };
-
-    async function rodar() {
-      if (rodando) return;
-      rodando = true;
-      botao.disabled = true;
-      zerar();
-      await esperar(300);
-
-      let ok = 0;
-      let risco = 0;
-      for (let i = 0; i < linhas.length; i++) {
-        const linha = linhas[i];
-        definirEstado(linha, "checking");
-        await esperar(650);
-
-        const valor = parseFloat(linha.dataset.valor);
-        if (linha.dataset.resultado === "erro") {
-          risco += valor;
-          linha.querySelector("[data-motivo-texto]").textContent = linha.dataset.motivo;
-          definirEstado(linha, "erro");
-        } else {
-          ok += valor;
-          definirEstado(linha, "ok");
-        }
-        atualizarTotais(ok, risco, i + 1);
-      }
-
-      botao.textContent = "Refazer simulação";
-      botao.disabled = false;
-      rodando = false;
-    }
-
-    botao.addEventListener("click", rodar);
-
-    if ("IntersectionObserver" in window) {
-      const observador = new IntersectionObserver((entradas) => {
-        if (entradas.some((e) => e.isIntersecting)) {
-          observador.disconnect();
-          setTimeout(rodar, reduzirMovimento ? 0 : 500);
-        }
-      }, { threshold: 0.35 });
-      observador.observe(mesa);
-    }
+    new IntersectionObserver(([e]) => { formVisivel = e.isIntersecting; atualizarBarra(); }, { threshold: 0.1 }).observe(secaoContato);
   }
 
   /* ------------------------------------------------------------------
